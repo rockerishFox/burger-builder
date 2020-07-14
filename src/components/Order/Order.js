@@ -9,8 +9,8 @@ const order = (props) => {
       amount: props.ingredients[ingredient],
     });
   }
-  const ingredientsShown = ingredientsArray.map((ig) => {
-    return (
+  const ingredientsShown = ingredientsArray.map((ig) =>
+    ig.amount > 0 ? (
       <span
         key={ig.name}
         style={{
@@ -23,8 +23,8 @@ const order = (props) => {
       >
         {ig.name} ({ig.amount})
       </span>
-    );
-  });
+    ) : null
+  );
   return (
     <div className={classes.Order}>
       <p>Ingredients: {ingredientsShown} </p>

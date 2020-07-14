@@ -14,11 +14,11 @@ const order = (props) => {
       <span
         key={ig.name}
         style={{
-          textTransform: "capitlize",
+          textTransform: "capitalize",
           display: "inline-block",
           margin: "0 8px",
           border: "1px solid #ccc",
-          padding: "2px",
+          padding: "2px 5px",
         }}
       >
         {ig.name} ({ig.amount})

@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { act } from "react-dom/test-utils";
 
 const initialState = {
   orders: [],
@@ -7,6 +8,13 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case actionTypes.PURCHASE_BURGER_START:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case actionTypes.PURCHASE_BURGER_SUCCES:
       return {
         ...state,
@@ -19,6 +27,7 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.PURCHASE_BURGER_ERROR:
       return { ...state, loading: false };
+      
     default:
       return state;
   }

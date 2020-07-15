@@ -190,7 +190,7 @@ class ContactData extends Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -206,12 +206,14 @@ const mapStateToProp = (state) => {
   return {
     ings: state.ingredients,
     price: state.totalPrice,
+    loading: state.loading
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onOrderBurger: (orderData) =>
-      dispatch(orderActions.purchaseBurgerStart(orderData)),
+      dispatch(orderActions.purchaseBurger(orderData)),
   };
 };
 

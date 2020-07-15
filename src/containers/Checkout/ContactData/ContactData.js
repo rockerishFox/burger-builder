@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 import Button from "../../../components/UI/Button/Button";
 import classes from "./ContactData.module.css";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import axios from "../../../axios-orders";
 import Input from "../../../components//UI//Input/Input";
-
-
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import * as orderActions from "../../../store/actions/index";
 
 class ContactData extends Component {
   state = {
@@ -105,8 +105,6 @@ class ContactData extends Component {
     event.preventDefault(); // prevents default behaviour
     //in our case it doesn't send a request and it doesn't reload the page
 
-    this.setState({ loading: true });
-
     const formData = {};
     for (let elem in this.state.orderForm) {
       formData[elem] = this.state.orderForm[elem].value;
@@ -117,8 +115,8 @@ class ContactData extends Component {
       price: this.props.price, // this would be calculated on the server in real apps
       orderData: formData,
     };
-    
-    
+
+    this.props.onOrderBurger(order);
   };
 
   validate(value, rules) {
@@ -159,7 +157,7 @@ class ContactData extends Component {
 
     let validForm = true;
     for (let input in updatedOrderForm) {
-        validForm = updatedOrderForm[input].valid && validForm;
+      validForm = updatedOrderForm[input].valid && validForm;
     }
 
     this.setState({ orderForm: updatedOrderForm, isValid: validForm });
@@ -204,13 +202,20 @@ class ContactData extends Component {
   }
 }
 
-
 const mapStateToProp = (state) => {
   return {
     ings: state.ingredients,
-    price: state.totalPrice
+    price: state.totalPrice,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onOrderBurger: (orderData) =>
+      dispatch(orderActions.purchaseBurgerStart(orderData)),
   };
 };
 
-
-export default connect(mapStateToProp)(ContactData);
+export default connect(
+  mapStateToProp,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));

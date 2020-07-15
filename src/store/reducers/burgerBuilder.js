@@ -24,6 +24,7 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredient],
       };
+
     case actionTypes.REMOVE_ING:
       return {
         ...state,
@@ -33,12 +34,15 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredient],
       };
+
     case actionTypes.INIT_ING:
       return {
         ...state,
         ingredients: action.ingredients,
-        error: false
+        totalPrice: 10,
+        error: false,
       };
+
     case actionTypes.INIT_ING_ERROR:
       return {
         ...state,

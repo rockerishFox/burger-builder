@@ -3,7 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   ingredients: null,
   totalPrice: 10,
-  error: false
+  error: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -32,10 +32,21 @@ const reducer = (state = initialState, action) => {
           [action.ingredient]: state.ingredients[action.ingredient] - 1,
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredient],
-
       };
+    case actionTypes.INIT_ING:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        error: false
+      };
+    case actionTypes.INIT_ING_ERROR:
+      return {
+        ...state,
+        error: true,
+      };
+    default:
+      return state;
   }
-  return state;
 };
 
 export default reducer;

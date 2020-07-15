@@ -17,11 +17,11 @@ import * as burgerBuilderActions from "../../store/actions/index";
 class BurgerBuilder extends Component {
   state = {
     orderable: false,
-    checkout: false
+    checkout: false,
   };
 
   componentDidMount() {
-    
+    this.props.initIngredients();
   }
 
   updatePurchaseState(updatedIngredients) {
@@ -118,13 +118,16 @@ const mapStateToProps = (state) => {
   return {
     ings: state.ingredients,
     price: state.totalPrice,
+    error: state.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    initIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
     addIngredient: (ing) => dispatch(burgerBuilderActions.addIngredient(ing)),
-    removeIngredient: (ing) => dispatch(burgerBuilderActions.removeIngredient(ing)),
+    removeIngredient: (ing) =>
+      dispatch(burgerBuilderActions.removeIngredient(ing)),
   };
 };
 

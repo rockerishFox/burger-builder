@@ -29,7 +29,6 @@ class Orders extends Component {
         </div>
       );
     }
-    console.log(this.props.orders)
     return orders;
   }
 }

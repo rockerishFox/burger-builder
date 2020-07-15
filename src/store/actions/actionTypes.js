@@ -1,0 +1,4 @@
+export const ADD_ING = 'ADD_INGREDIENT'
+export const REMOVE_ING = 'REMOVE_INGREDIENT'
+export const INIT_ING = 'SET_INGREDIENTS'
+export const INIT_ING_ERROR = 'SET_INGREDIENTS_ERROR'

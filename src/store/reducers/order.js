@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { act } from "react-dom/test-utils";
+import { updateObject } from "../utilities";
 
 const initialState = {
   orders: [],
@@ -10,39 +10,45 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.PURCHASE_INIT:
-      return {
-        ...state,
+      return updateObject(state, {
         purchased: false,
-      };
+      });
 
     case actionTypes.PURCHASE_BURGER_START:
-      return {
-        ...state,
+      return updateObject(state, {
         loading: true,
-      };
+      });
 
     case actionTypes.PURCHASE_BURGER_SUCCES:
-      return {
-        ...state,
+      return updateObject(state, {
         loading: false,
         orders: state.orders.concat({
           ...action.orderData,
           id: action.orderId,
         }),
         purchased: false,
-      };
+      });
 
     case actionTypes.PURCHASE_BURGER_ERROR:
-      return { ...state, loading: false };
+      return updateObject(state, {
+        loading: false,
+      });
 
     case actionTypes.FETCH_ORDERS_START:
-      return { ...state, loading: true };
+      return updateObject(state, {
+        loading: true,
+      });
 
     case actionTypes.FETCH_ORDERS_SUCCESS:
-      return { ...state, loading: false, orders: action.orders };
+      return updateObject(state, {
+        loading: false,
+        orders: action.orders,
+      });
 
     case actionTypes.FETCH_ORDERS_ERROR:
-      return { ...state, loading: false };
+      return updateObject(state, {
+        loading: false,
+      });
 
     default:
       return state;

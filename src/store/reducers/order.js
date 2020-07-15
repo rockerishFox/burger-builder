@@ -1,6 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utilities";
-import { act } from "@testing-library/react";
 
 const initialState = {
   orders: [],

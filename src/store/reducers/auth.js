@@ -11,6 +11,7 @@ const initialState = {
 const authStart = (state, action) => {
   return updateObject(state, { error: null, loading: true });
 };
+
 const authSucces = (state, action) => {
   return updateObject(state, {
     token: action.idToken,
@@ -19,6 +20,7 @@ const authSucces = (state, action) => {
     loading: false,
   });
 };
+
 const authFail = (state, action) => {
   return updateObject(state, {
     error: action.error,

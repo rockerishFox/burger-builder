@@ -7,6 +7,7 @@ import axios from "../../../axios-orders";
 import Input from "../../../components//UI//Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as orderActions from "../../../store/actions/index";
+import { updateObject } from "../../../shared/utilities";
 
 class ContactData extends Component {
   state = {
@@ -136,25 +137,22 @@ class ContactData extends Component {
   }
 
   inputChangedHandler = (event, inputId) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm, // this will not clone deeply
-    };
     // updatedOrderForm is a copy of orderForm and does not refer to original object
     // but, since we have nested objects, those objects are still actually pointers, so they are not cloned
     // modifying those nested objects will result in modifying the original saved value
     // therefore we must copy the nested item we use as well
-    const updatedFormElement = { ...updatedOrderForm[inputId] };
+    const updatedFormElement = updateObject(this.state.orderForm[inputId], {
+      value: event.target.value,
+      valid: this.validate(
+        event.target.value,
+        this.state.orderForm[inputId].validation
+      ),
+      touched: true,
+    });
 
-    updatedFormElement.value = event.target.value;
-
-    if (updatedFormElement.validation)
-      updatedFormElement.valid = this.validate(
-        updatedFormElement.value,
-        updatedFormElement.validation
-      );
-
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputId] = updatedFormElement;
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputId]: updatedFormElement,
+    });
 
     let validForm = true;
     for (let input in updatedOrderForm) {

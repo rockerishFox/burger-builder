@@ -9,6 +9,8 @@ import { Redirect } from "react-router-dom";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 
+import { updateObject } from "../../shared/utilities";
+
 class Auth extends Component {
   state = {
     controls: {
@@ -46,7 +48,7 @@ class Auth extends Component {
 
   componentDidMount() {
     // clear redirection in case we reached the auth page without building a burger
-    if(!this.props.building && this.props.authRedirectPath !== '/'){
+    if (!this.props.building && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
     }
   }
@@ -70,18 +72,16 @@ class Auth extends Component {
   }
 
   inputChangedHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
+    const updatedControls = updateObject(this.state.controls, {
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
         valid: this.validate(
           event.target.value,
           this.state.controls[controlName].validation
         ),
         touched: true,
-      },
-    };
+      }),
+    });
 
     this.setState({ controls: updatedControls });
   };

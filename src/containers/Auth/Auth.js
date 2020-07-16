@@ -9,7 +9,7 @@ import { Redirect } from "react-router-dom";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 
-import { updateObject } from "../../shared/utilities";
+import { updateObject, validate} from "../../shared/utilities";
 
 class Auth extends Component {
   state = {
@@ -53,29 +53,12 @@ class Auth extends Component {
     }
   }
 
-  validate(value, rules) {
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-    if (rules.isEmail) {
-      isValid = value.includes("@");
-    }
-    return isValid;
-  }
 
   inputChangedHandler = (event, controlName) => {
     const updatedControls = updateObject(this.state.controls, {
       [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
-        valid: this.validate(
+        valid: validate(
           event.target.value,
           this.state.controls[controlName].validation
         ),

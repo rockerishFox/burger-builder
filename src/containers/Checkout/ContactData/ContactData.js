@@ -7,7 +7,7 @@ import axios from "../../../axios-orders";
 import Input from "../../../components//UI//Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as orderActions from "../../../store/actions/index";
-import { updateObject } from "../../../shared/utilities";
+import { updateObject, validate } from "../../../shared/utilities";
 
 class ContactData extends Component {
   state = {
@@ -121,21 +121,6 @@ class ContactData extends Component {
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  validate(value, rules) {
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-    return isValid;
-  }
-
   inputChangedHandler = (event, inputId) => {
     // updatedOrderForm is a copy of orderForm and does not refer to original object
     // but, since we have nested objects, those objects are still actually pointers, so they are not cloned
@@ -143,7 +128,7 @@ class ContactData extends Component {
     // therefore we must copy the nested item we use as well
     const updatedFormElement = updateObject(this.state.orderForm[inputId], {
       value: event.target.value,
-      valid: this.validate(
+      valid: validate(
         event.target.value,
         this.state.orderForm[inputId].validation
       ),

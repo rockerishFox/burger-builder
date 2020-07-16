@@ -22,6 +22,21 @@ export const authError = (error) => {
   };
 };
 
+export const logOut = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
+
+export const checkAuthTimeout = (expirationTime) => {
+  // setTimeout uses miliseconds so we need to multiply by 1000
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logOut());
+    }, expirationTime * 1000);
+  };
+};
+
 export const auth = (email, password, isSignUp) => {
   return (dispatch) => {
     // .. authenticate use
@@ -44,6 +59,7 @@ export const auth = (email, password, isSignUp) => {
       .then((res) => {
         // console.log(res.data);
         dispatch(authSuccess(res.data.idToken, res.data.localId));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch((error) => {
         console.log(error.response);

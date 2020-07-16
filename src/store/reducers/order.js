@@ -26,7 +26,7 @@ const purchaseBurgerSuccess = (state, action) => {
       ...action.orderData,
       id: action.orderId,
     }),
-    purchased: false,
+    purchased: true,
   });
 };
 

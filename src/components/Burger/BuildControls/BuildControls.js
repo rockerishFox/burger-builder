@@ -32,7 +32,7 @@ const buildControls = (props) => (
       disabled={!props.orderable}
       onClick={props.ordered}
     >
-      ORDER
+      {props.isAuth ? "ORDER" : "SIGN UP TO ORDER"}
     </button>
   </div>
 );

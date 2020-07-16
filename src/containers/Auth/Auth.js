@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 import classes from "./Auth.module.css";
 
@@ -101,7 +102,7 @@ class Auth extends Component {
         config: this.state.controls[key],
       });
     }
-    const form = formElementsArray.map((formElement) => (
+    let form = formElementsArray.map((formElement) => (
       <Input
         key={formElement.id}
         elementType={formElement.config.elementType}
@@ -114,11 +115,24 @@ class Auth extends Component {
       />
     ));
 
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+    if (this.props.error) {
+      // the message property is available for firebase backend only
+      errorMessage = <p>{this.props.error.message}</p>;
+    }
+
     return (
       <div className={classes.Auth}>
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
-          <Button btnType="Success">{this.state.isSignUp ? "Sign up" : "Sign in"}</Button>
+          <Button btnType="Success">
+            {this.state.isSignUp ? "Sign up" : "Sign in"}
+          </Button>
         </form>
         <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
           Switch to {this.state.isSignUp ? "Sign in" : "Sign up"}
@@ -128,6 +142,10 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return { loading: state.auth.loading, error: state.auth.error };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
@@ -135,4 +153,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
